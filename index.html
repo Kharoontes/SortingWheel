@@ -1,198 +1,1827 @@
 <!DOCTYPE html>
-<html lang="en">
+<html><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+<title>Random Name Picker Wheel</title>
+<meta name="description" content="A free online random name wheel picker. Click to spin the wheel and pick a competition winner! A fun app for teachers, classrooms, raffles, contests!">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            width: 100vw;
-            height: 100vh;
-            overflow: hidden;
-        }
+<meta name="keywords" content="random,name,wheel,picker,free,word,contest,fortune,classtools">
+<meta name="author" content="Russel Tarr">
+<meta property="og:author" content="Russel Tarr">
+<meta name="image" property="og:image" content="https://www.classtools.net/cubeportfolio-elements/img/4.jpg">
+<link rel="author" href="https://plus.google.com/103640547989049324091">
+<meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE;chrome=1">
 
-        .wheel {
-            width: 300px;
-            height: 200px;
-            /* background-color: blue; */
+<script src="js/3.6.0-jquery.min.js"></script>
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+<script src="js/1.12.1-jquery-ui.min.js"></script>
+<script type="text/javascript" src="js/.-8203-save.js"></script>
 
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-        }
+<script type="text/javascript" src="js/apprise-min.js"></script>
+<link rel="stylesheet" type="text/css" href="css/apprise-style.css">
+<link rel="stylesheet" href="css/random-name-picker-style-curtains.css" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Rye" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="css/css-hover.css">
+<link rel="stylesheet" type="text/css" href="css/confet-style.css">
+	<link rel="stylesheet" type="text/css" href="css/noty-noty.css">
+<script type="text/javascript" src="js/noty-noty.js"></script>
+<link rel="stylesheet" type="text/css" href="css/themes-nest.css"> 
+	
+	<style>
+		
+		.js-container{z-index:999}
+		body{background: #4f3722 url('images/darkcurtainRed.jpg') repeat-x;background-size:contain;}
+		.seats{position:absolute;bottom:0px;left:0px;width:100%;height:20%;z-index:1}
+		
+		.edem
+		{
+			
+		display:inline-block;	
+		}
 
-        .card {
-            /* width: 90px;
-            height: 50px;
-            background-color: red; */
+		.theFace
+		{
+		position:absolute;
+		left:49.5%;
+		top:39%;
+		z-index:9999;
+		width:5%;
+		height:5%;
+		background-image: url("images/face.jpg");
+		background-size: contain;
+		border-radius:50%;
+		}
+		
+	</style>
+<script>
+
+	
+colScheme="Red"
+wheelTheme="0"
 
 
-            width: 200px;
-            height: 200px;
-            border-radius: 100px;
-            box-shadow: 10px 10px 8px black;
+function toggleTheme(z)
+	{
+	$("#cols").val(z);
+	colScheme=z
+if(colScheme=="Red"){$(".window").css("background","linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(217,30,30,1) 33%, rgba(217,30,30,1) 66%, rgba(0,0,0,1) 100%)");}
+if(colScheme=="Blue"){$(".window").css("background","linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(30,30,217,1) 33%, rgba(30,30,217,1) 66%, rgba(0,0,0,1) 100%)");}
+if(colScheme=="Green"){$(".window").css("background","linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(30,217,30,1) 33%, rgba(30,217,30,1) 66%, rgba(0,0,0,1) 100%)");}
+if(colScheme=="Purple"){$(".window").css("background","linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(202,30,217,1) 33%, rgba(202,30,217,1) 66%, rgba(0,0,0,1) 100%)");}
+	
+		
+	$("body").css("background", "#4f3722 url('images/darkcurtain"+z+".jpg') ")
+	$("body").css("background-size", "contain")
+	$(".mask1, .mask2").css("background-image","url('images/darkcurtain"+z+".jpg')");
+	$(".leftcurtain img, .rightcurtain img").attr("src","images/frontcurtain"+z+".jpg");
+	$(".seats").attr("src","images/seats"+z+".png");
+	var newcol="dark"+z.toLowerCase()
+	if(z=="Purple")
+		{
+		var newcol="DarkViolet"
+		}
+	$("#wellDone, #textboxWrap").css("background-color",newcol);
+	}
+	
 
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
+function zoomit()
+{
+h=$(window).height();
+console.log("height: "+h)	
+zoomScale=h/700
+$("#primary").css("zoom",zoomScale*1)
+$(".rightcurtain, .leftcurtain").css("zoom",zoomScale/0.92)
+//z=$("#wellDone").position();z=z.left;
+//$("#wellDone").css("left",z-(zoomScale*200)+"px")
+}
+	
+	
+fst=0
+function toggleFullScreen() {
+	
+	
+if ( self !== top ) { // you're in an iframe embed
+	window.open(window.location.href+"?fs")
+	return
+	}
 
-            font-size: 2.5em;
-        }
-    </style>
+  if (!document.fullscreenElement &&    // alternative standard method
+      !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement ) {  // current working methods
+    if (document.documentElement.requestFullscreen) {
+      document.documentElement.requestFullscreen();
+    } else if (document.documentElement.msRequestFullscreen) {
+      document.documentElement.msRequestFullscreen();
+    } else if (document.documentElement.mozRequestFullScreen) {
+      document.documentElement.mozRequestFullScreen();
+    } else if (document.documentElement.webkitRequestFullscreen) {
+      document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+    }
+	  fst=1
+	init()
+  } else {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (document.msExitFullscreen) {
+      document.msExitFullscreen();
+    } else if (document.mozCancelFullScreen) {
+      document.mozCancelFullScreen();
+    } else if (document.webkitExitFullscreen) {
+      document.webkitExitFullscreen();
+    }
+	 fst=0
+	init()
+  }
+}
+document.addEventListener('fullscreenchange', exitHandler);
+document.addEventListener('webkitfullscreenchange', exitHandler);
+document.addEventListener('mozfullscreenchange', exitHandler);
+document.addEventListener('MSFullscreenChange', exitHandler);
+function exitHandler() {
+    if (!document.fullscreenElement && !document.webkitIsFullScreen && !document.mozFullScreen && !document.msFullscreenElement) {
+        fst=0;init()
+    }
+}  
+</script>
+<style type="text/css" media="screen">
+#wellDone{font-family: 'Rye', cursive;z-index:99999}
+body, html{text-rendering: auto;font-family:Verdana, Geneva, sans-serif;margin: 0 auto;}
+.editit a:link,.editit a:visited,.editit a:active{color:white;text-decoration:none;}
+h1 {color: rgb(200,200,200);}
+h2{font-family: 'Rye', cursive;}
+h3 {text-shadow: 0.5px 1px 1px #88D;}
+:-webkit-full-screen,-moz-full-screen
+{
+background:#4f3722;	
+}.but
+{
+background:#CCC;
+border:1px black solid;
+padding:5px;
+text-decoration:none;
+color:black;
+font-size:large;
+-webkit-border-radius: 3px;
+-moz-border-radius: 3px;
+border-radius: 3px;
+margin-right:5px;
+text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+cursor:pointer;	
+}
+	
+.but
+{
+padding:2px 10px;
+margin-top:10px;margin-right:10px;
+background:#FF9;
+-webkit-border-radius: 5px;
+-moz-border-radius: 5px;
+border-radius: 5px;
+color:red;
+cursor:pointer;
+}
+	
+
+.is-spinning {
+  -webkit-animation: tick 700ms cubic-bezier(0.34, 1.56, 0.64, 1);
+          animation: tick 700ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@-webkit-keyframes tick {
+  40% {
+    transform: rotate(-12deg);
+  }
+}
+
+@keyframes tick {
+  40% {
+    transform: rotate(-12deg);
+  }
+}
+	
+</style>
+<script>
+theTit="Random Name Picker!"
+createdByPremiumUser=0;theFolder="";
+
+</script>
+<script src="js/.-7535-functions.js" type="text/javascript"></script>  
 </head>
 
-<body>
-    <div class="wheel">
-        <img src="https://picsum.photos/1000/1200" class="card">
-        <img src="https://picsum.photos/1000/1100" class="card">
-        <img src="https://picsum.photos/1000/1300" class="card">
-        <img src="https://picsum.photos/1000/1400" class="card">
-        <img src="./icon-round-1080.png" class="card" style="box-shadow: none;">
-        <img src="https://picsum.photos/1000/1150" class="card">
-        <img src="https://picsum.photos/1000/1350" class="card">
-        <img src="https://picsum.photos/1000/1450" class="card">
 
-        <!-- <div class="card">0</div>
-        <div class="card">1</div>
-        <div class="card">2</div>
-        <div class="card">3</div>
-        <div class="card">4</div>
-        <div class="card">5</div>
-        <div class="card">6</div>
-        <div class="card">7</div> -->
+
+
+
+
+<body onload="init();loadup();zoomit();toggle(2000);gentleSpin()">
+	
+<div id="aud" style="position:absolute;display:none;bottom:0px;right:0px;z-index:99999;pointer-events: none;">
+<img id="theAud" src="images/images-aud.png">
+</div>
+
+
+
+
+
+<style>
+	
+#loginFields{
+	display:none;padding:20px;background:yellow;border:1px black solid;
+       font-family: 'Open Sans',sans-serif;
+	border-radius:1em;
+	
+}
+
+/* rect Out */
+.hvr-rect-out {
+	-webkit-border-radius: 5px;
+-moz-border-radius: 5px;
+border-radius: 5px;
+  display: inline-block;
+	border:1px black solid;
+font-size:2em;
+padding:0.2em;
+	color:white !important;
+  -webkit-transform: perspective(1px) translateZ(0);
+  transform: perspective(1px) translateZ(0);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+  position: relative;
+  background:CornflowerBlue;
+  -webkit-transition-property: color;
+  transition-property: color;
+  -webkit-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+	margin-right:0.5em;
+}
+.hvr-rect-out:before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: BlueViolet;
+  -webkit-transform: scale(0);
+  transform: scale(0);
+  -webkit-transition-property: transform;
+  transition-property: transform;
+  -webkit-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+  -webkit-transition-timing-function: ease-out;
+  transition-timing-function: ease-out;
+}
+.hvr-rect-out:hover, .hvr-rect-out:focus, .hvr-rect-out:active {
+  color: white !important;
+}
+.hvr-rect-out:hover:before, .hvr-rect-out:focus:before, .hvr-rect-out:active:before {
+  -webkit-transform: scale(1);
+  transform: scale(1);
+}
+	
+	.bg-color {
+color: #FFF;
+text-shadow: 1px 1px #FFF;
+text-align: center;
+background: rgba(255, 253, 160, 1);
+background: -webkit-linear-gradient( left, #0F0 0%, #FF0 25%, #F00 50%, #00F 75%, #0F0 100%) repeat;
+-webkit-background-clip: text;
+-ms-background-clip: text;
+-moz-background-clip: text;
+background-clip: text;
+-webkit-text-fill-color: transparent;
+-ms-text-fill-color: transparent;
+-moz-text-fill-color: transparent;
+text-fill-color: transparent;
+-webkit-animation-name: masked-animation;
+-webkit-animation-duration: 150s;
+-webkit-animation-iteration-count: infinite;
+-webkit-animation-timing-function: linear;
+}
+@-webkit-keyframes masked-animation {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: -8000px -3000px;
+  }
+}
+
+html,body
+{
+margin: 0px;
+height:100%;
+}
+
+.small
+{
+font-size:x-small;	
+}
+	
+#greybg
+{
+position:fixed;
+display:none;
+top:0px;left:0px;
+z-index:99998;
+width:100%;
+height:100%;
+opacity: 0.5;
+background:rgba(203,202,202,1.00)
+}
+
+#loginBox
+{
+position:fixed;
+z-index:999999999;
+width:30%;
+display:none;
+color:black;
+border-radius: 1em;
+        padding: 1em;
+        top: 50%;
+        left: 50%;
+        margin-right: -50%;
+        transform: translate(-50%, -50%);
+	
+}
+
+#login a:link {color:white;text-decoration:none; font-size:small;}
+#login a:active{color:white;text-decoration:none}
+#login a:visited{color:white;text-decoration:none}
+#login
+{
+font-family: 'Open Sans',sans-serif;
+z-index:9999;
+font-size:small;
+position:fixed;
+top:0px;
+left:0px;
+width:100%;
+text-align:left;
+margin:0px;
+background-color:#44619d;
+text-decoration:none;
+padding:1px;
+}
+</style>
+
+
+
+
+
+<script>
+
+fbtemplate=0;
+premiumUser=0;
+premiumUserName="";
+premiumUserPW="";
+	
+	if (typeof createdByPremiumUser !== 'undefined') {
+    if(createdByPremiumUser==1)
+	{if(typeof removAds == 'function') 
+	{
+	removAds();$(".asd").hide();$(".adsbygoogle").remove()
+	setTimeout('removAds();$(".asd").hide();$(".adsbygoogle").remove()',1000)//belt and braces
+	}}
+	}
+	
+function showFields()
+	{
+	$(".appriseOuter, .appriseInner").remove()
+	t=$("#login").css("top");
+	z=$("#loginBox").css("top")
+	/*if(t=="auto"){console.log(1);$("#loginBox").css("top","-75px");}*/
+	z=t=$("#loginBox").css("top")
+	$("#login, #greybg, #loginFields, #loginBox").show()
+	}
+
+function hideFields()
+{
+$("#greybg, #loginFields, #loginBox").hide()
+}
+
+function showLoginDetails()
+{
+document.getElementById("loginBtn").style.display="none"
+document.getElementById("loggedIn").innerHTML="<a href='#'>Logged in as "+	premiumUserName +" | <a href='javascript:logout()'>Logout | <a target='_blank' href='//www.classtools.net'>Home | <a target='_blank' href='//www.classtools.net/fform.php'>Contact |  <a target='_blank' href='//www.classtools.net/_SEARCH/index.php'>PowerSearch | ";
+if(typeof savethefave == 'function') 
+	{document.getElementById("loggedIn").innerHTML+="<span id='favBar'><a href='javascript:savethefave()'>Add to Favourites | ";}
+//IMPORTANT NOTE: "savethefave" belongs in the PARENT page, so can be customised in terms of specifying title / location of widget. This function in turn calls savefave() on THIS page.
+if(typeof removAds == 'function') 
+	{
+	removAds();$(".asd").hide()
+	setTimeout('removAds();$(".asd").hide()',1000)//belt and braces
+	}
+document.getElementById("loggedIn").innerHTML+="<a href='javascript:viewfavs()'>View Favourites | ";
+document.getElementById("loggedIn").innerHTML+='<a target="_blank" href="https://www.classtools.net/templates/_ac.php">Account Status | '
+document.getElementById("loggedIn").innerHTML+='<a target="_blank" href="https://www.classtools.net/profiles">*Personal Branding* [NEW!] | '
+document.getElementById("loggedIn").style.display="block"
+
+if(fbtemplate==1)
+	{
+	$('body').css({"padding":"20px 0 0 0"});
+	$('fixeddiv').css({"top":"5px"});
+	$("#loginDiv").hide();
+	$("#login").show();
+	}
+}
+
+mutewritten=false
+function muteshow()
+{
+	if (typeof playSound == 'function' && mutewritten==false) { 
+		mutewritten=true;
+		console.log("Mute = "+mutewritten)
+		$("#loginBtn").append(' | <a target="_blank" href="javascript:muteit()"><span id="muteTxt">Mute Sounds') 
+	}
+}
+
+muted=false;
+function muteit()
+	{
+	if(muted==false)
+		{
+		muted=true;
+		document.getElementById("muteTxt").innerHTML="Turn Sounds On";
+		alert("Sounds muted.");
+		}
+	else
+		{
+		muted=false;
+		document.getElementById("muteTxt").innerHTML="Mute Sounds";
+		alert("Sounds turned on.");
+		}
+	}
+	
+	
+function logout()
+{
+$.ajax({ url: '//www.classtools.net/templates/_logout.php',
+			dataType: 'json',
+			type: 'post',
+			async:false,//wait for response before doing something
+			success: function(data) 
+				{
+				document.getElementById("loginBtn").style.display="block"
+				document.getElementById("loggedIn").style.display="none"
+				premiumUser=0;
+                }
+			});	
+	
+}
+
+
+function viewfavs()
+{self.location="//www.classtools.net/classtools_premium/user_templates.php?"+premiumUserName}
+
+function saveFave(theLoc,theTitle)
+{
+	
+	temp=self.location+""
+	$.ajax({ url: '//www.classtools.net/classtools_premium/add_template_to_user_profile.php',
+			 data: {
+					widgetLoc:theLoc,
+					premTitle:theTitle
+			 		},
+			dataType: 'json',
+			type: 'post',
+			success: function(data) 
+				{
+				alert(data.theResult)
+                }
+			});
+
+}
+
+showStatusAfterLogin=false;
+function doLoginNow()
+{
+subUsr=document.getElementById("username").value;
+subPw=document.getElementById("thepw").value;
+doLogin(subUsr,subPw)
+}
+
+function doLogin(subUsr,subPw)
+{
+	$.ajax({ url: '/templates/_login_manual.php',
+			 data: {
+					submUsr: subUsr,
+					submPw: subPw,
+				 	premCreator: ""
+			 		},
+			dataType: 'json',
+			type: 'post',
+			async:false,//wait for response before doing something
+			success: function(data) 
+				{
+				
+				if(data.success==1)
+					{
+					premiumUser=1
+					premiumUserName=subUsr;
+					premiumUserPW=subPw;
+					showLoginDetails()
+					hideFields();
+					if(showStatusAfterLogin==true){self.location="https://www.classtools.net/templates/_ac.php"}//show account status if user is following the "your account is about to expire!" auto-email.
+					if(data.createdByThisPremUser==1){createdByThisPremiumUser=1}
+					}
+				else
+					{
+					ther=data.theResult;
+						alert(ther)
+					if(ther.indexOf("EXPIRED")!=-1)
+						{
+						$("#loginResult").html("YOUR ACCOUNT HAS EXPIRED.")
+							
+						//Redirect to renew the account
+						$("#loginExp").val(subUsr)
+						$("#pwExp").val(subPw)
+						//$("#ct_user").submit()
+							
+						}
+					else if(ther.indexOf("not spotted")==-1)
+						{
+						$("#loginResult").html("Incorrect password.<br><a href='javascript:sendReminder()'>Send email reminder?")
+						em=data.result.split(" = ");em=em[1];
+						}
+					else if(ther.indexOf("not spotted")!=-1)
+						{
+						$("#loginResult").html("Your username has not been spotted.\n*If you have just taken out a subscription, make sure you activate your account by logging into the parent site www.activehistory.co.uk* (as it states in your signup email)");	
+						}
+					}
+					
+                }
+			});
+}
+	
+function sendReminder()
+	{
+	subUsr=document.getElementById("username").value;
+
+	$.ajax({ url: '/templates/_login_sendpwreminder.php',
+			 data: {
+					submUsr:subUsr
+			 		},
+			dataType: 'json',
+			type: 'post',
+			async:false,//wait for response before doing something
+			success: function(data) 
+				{
+				$("#loginResult").html("");
+				hideFields();
+				alert("A password reminder has been sent to the email associated with this account.\nPlease check your junk mail in case it was sent there.");
+                }
+			});	
+	}
+
+</script>
+
+
+
+<div id="login">
+<table><tr><td>
+
+    <div id="loginBtn"><a href="www.classtools.html" target="_blank">Classtools.net Home</a> | <span class="bg-color"><a href="javascript:showFields().html">Premium Login</a></span> | <a target="_blank" href="https://www.facebook.com/Classtools">Facebook Fanpage</a>
+     | <a target="_blank" href="index.html">PowerSearch</a>
+		
+		
+		
+      | <a target="_blank" href="fform.html">Contact</a>
     </div>
-    <script>
-        let theta = Math.PI / 4.0;
-        let new_theta = 0.0;
-        let new_x = 0.0;
-        let new_y = 0.0;
-        let wheel_radius = 200.00;
-        let wheel_theta = 0.0;
-        const cards = document.querySelectorAll('.card');
-        const wheel = document.querySelector('.wheel');
-        const center = {
-            x: parseFloat(getComputedStyle(cards[0]).left),
-            y: parseFloat(getComputedStyle(cards[0]).top)
-        }
+    
+    <div id="loggedIn">
+    </div>
 
 
-        cards.forEach((card, index) => {
-            new_theta = theta * index;
-            new_x = (Math.cos(new_theta) * wheel_radius);
-            new_y = (-1.0 * Math.sin(new_theta) * wheel_radius);
+	
+	
 
-            // place the cards on the wheel
-            card.style.left = `${center.x + new_x}px`;
-            card.style.top = `${center.y + new_y}px`;
-        });
+</td></tr></table>
+</div>
 
-        let wheel_in_progress = false;
-        let snap_in_progress = false;
+<div id="loginBox">
+    <div id="loginFields" style="">
+        <div>
+		<p align="center"><img src="images/www.classtools.net-_logo.png" style="width:80%">
+			</p><p align="center" style="font-size:1.5em !important">PREMIUM LOGIN</p>
+		
+			<p align="center">ClassTools Premium membership gives access to all templates, no advertisements, personal branding and other benefits!</p>
+	
+			
+		
+          <table style="text-align: center;margin:auto;" align="center" width="10%" border="0" bgcolor="yellow" cellpadding="5px">
+            <tr>
+              <td>Username: &nbsp;</td>
+              <td>
+                <input type="text" style="font-size:1.5em" name="username" id="username" value=""></td>
+              <td>&nbsp;</td>
+            </tr>
+            <tr>
+              <td>Password: &nbsp;</td>
+              <td><input type="password" name="thepw" id="thepw" style="font-size:1.5em"></td>
+              <td>&nbsp;</td>
+            </tr>
+            <tr>
+              <td colspan="3" class="small" style="text-align: center">
+				  
+				  <a href="javascript:doLoginNow().html"><span class="hvr-rect-out">Submit</span></a> 
+				  <a href="javascript:hideFields().html"><span class="hvr-rect-out">Cancel</span></a>
+				 <!-- <input type="button" name="button" id="button" value="Submit" onClick="doLoginNow()">
+				  <input type="button" name="canc" id="canc" value="Cancel" onClick="javascript:hideFields()">-->
+				  <p id="loginResult" style="font-size:2em;padding:1em">&nbsp;</p>
+				</td>
+              </tr>
+            <tr>
+           <p>
+              </p><td colspan="2" style="text-align:center">Not a member? <a target="_blank" href="//www.activehistory.co.uk/classtools_premium/index.htm"><span style="color:blue">JOIN NOW!</span></a></td>
+              <td>&nbsp;</td>
+            </tr>
+          </table>
+        </div>
+		
+   		</div>
+	
+   </div>
+<div id="greybg"></div>
 
-        document.addEventListener('wheel', event => {
-            if (snap_in_progress) {
-                return;
-            } else {
-                clearTimeout(wheel_in_progress);
-                // let scroll_speed = event.deltaY * 0.002;
-                let scroll_speed = (event.deltaY / 360) * 20;
+<form id="ct_user" method="POST" action="/templates/_ac.php">
+<input type="hidden" name="loginExp" id="loginExp" value="">
+<input type="hidden" name="pwExp" id="pwExp" value="">
+</form>
 
-                wheel_theta = wheel_theta + scroll_speed;
-                wheel.style.transitionDelay = '0.0s';
-                wheel.style.transitionDuration = '0.0s';
-                wheel.style.transform = `translate(-50%, -50%) rotate(${wheel_theta}deg)`;
+<script>
+if(premiumUser==1)
+	{
+	showLoginDetails();
+	hideFields();
+	$("._ap_apex_ad").hide();
+	}
+fbtemplate=0;
+wheel=0;
+wheel=1;theTemplate="wheel";
+if(wheel==1)
+	{
+	//$("#loginDiv").hide();
+	$('#login').css({"padding":"0px","margin":"0px","background-color":"black"});//"top":"auto","bottom":"0px",
+	//$('#loginBox').css({"top":"auto","bottom":"40px"});
+	
+	$("#login").show();
+	}
+	
 
-                cards.forEach(card => {
-                    card.style.transitionDelay = '0.0s';
-                    card.style.transitionDuration = '0.0s';
-                    card.style.transform = `translate(-50%, -50%) rotate(${-1.0 * wheel_theta}deg)`;
-                });
-
-                wheel_in_progress = setTimeout(() => {
-                    snap_back();
-                }, 100)
-            }
-        });
-
-        const center_of_wheel = {
-            x: parseFloat(getComputedStyle(wheel).left),
-            y: parseFloat(getComputedStyle(wheel).top)
-        }
-
-        const snap_point = {
-            x: cards[2].getBoundingClientRect().x + 100,
-            y: cards[2].getBoundingClientRect().y + 100
-        }
-        snap_point.theta = Math.atan2(Math.abs(snap_point.y - center_of_wheel.y), Math.abs(snap_point.x - center_of_wheel.x));
-        snap_point.theta = snap_point.theta * (180 / Math.PI);
+    if(typeof jQuery == 'undefined'){
+		console.log("YES");
+        var oScriptElem = document.createElement("script");
+        oScriptElem.type = "text/javascript";
+        oScriptElem.src = "/templates/jquery.js";
+        document.head.insertBefore(oScriptElem, document.head.getElementsByTagName("script")[0])
+    }
 
 
-        function snap_back() {
-            snap_in_progress = true;
-            let shortest_distance = Math.pow(((cards[3].getBoundingClientRect().x + 100) - snap_point.x), 2) + Math.pow(((cards[3].getBoundingClientRect().y + 100) - snap_point.y), 2);
-            shortest_distance = Math.sqrt(shortest_distance);
-            let closest_card = null;
+function checkads()
+{
+if(premiumUser==1){return}
+var adBlockEnabled = false;
+	var testAd = document.createElement('div');
+	testAd.innerHTML = '&nbsp;';
+	testAd.className = 'adsbox';
+	document.body.appendChild(testAd);
+	window.setTimeout(function() {
+			  if (testAd.offsetHeight === 0) {
+				adBlockEnabled = true;
+			  }
+			  testAd.remove();
+		
+		
+		$(".adsbygoogle").each(function( index ) {
+		var filled=$( this ).attr("data-ad-status")
+		var size=$( this ).attr("style")
+		var adId=$( this ).attr("data-ad-slot")
+		flag=0
+		if(adId!=undefined)
+			{
+			if ($( this ).html() ==""){flag=1}
+			}
+		if(adBlockEnabled==true){flag=1}
+		console.log('AdBlock Enabled? ', adBlockEnabled)
+		console.log("CHECKING: "+adId+" / "+filled+" / "+ $( this ).html())
+		if(flag==1)
+			{
+			var dims=size.replace(/[^0-9]/g, '');
+			console.log(filled+" / "+adId+" / "+size+" / "+dims)
+			
+			var theim="";
+			if(dims.indexOf("728")!=-1){theim="/fallbackads/72890";got="https://www.activehistory.co.uk/classtools_premium/index.htm?id=fallback"}
+			if(dims=="300250" || dims=="277195"){theim="/fallbackads/300250";got="https://www.activehistory.co.uk/classtools_premium/index.htm"}
+			if(dims=="300600" || dims=="3000")
+				{
+				var randm=Math.floor(Math.random()*3)
+				if(randm==0){theim="/fallbackads/300600";got="https://www.activehistory.co.uk/classtools_premium/index.htm"}
+				if(randm==1){theim="/fallbackads/300600b";got="https://www.activehistory.co.uk"}
+				if(randm==2){theim="/fallbackads/300600c";got="https://www.activehistory.co.uk/books.php"}
+				}
+			if(theim!=""){
+				$(this).parent().before("<p id='fallbackAds' align='center'><a href='"+got+"' target='_blank'><img src='"+theim+".jpg' style='"+size+"' />");
+				var adc=$(this).parent().attr("id");
+				$("#"+adc).remove()
+				}
+			else
+				{
+				/*$.ajax({ url: "/fallbackads/log.php",
+					data: {adId: adId, dims: dims, templ: window.location.pathname},
+					type: 'get',cache: false,async:false
+					});*/
+				}
+			}
+		})
+		
+		
+		
+		}, 2000);
+		
 
-            cards.forEach((card, index) => {
-                let dx = (card.getBoundingClientRect().x + 100) - snap_point.x;
-                let dy = (card.getBoundingClientRect().y + 100) - snap_point.y;
-                let current_distance = Math.pow(dx, 2) + Math.pow(dy, 2);
-                current_distance = Math.sqrt(current_distance)
+		
+	
+		
+		
+	
 
-                if (shortest_distance >= current_distance) {
-                    shortest_distance = current_distance;
-                    closest_card = card;
-                }
-            });
+}
+	
+setTimeout('checkads();iframer()',2000)
+	
+function iframer()
+	{
+if ( self !== top ) {
+// you're in an iframe
+	$("#login").html("<span align='center' style='margin:auto; display:table; '><a target='_blank' href='javascript:window.open(window.location.href)'>View Fullscreen")
+	$("#login").css("padding","0px");
+	$(".fsBtn").hide()
+	}
+}
+	
+</script>
 
-            let closest_cards_x = closest_card.getBoundingClientRect().x + 100;
-            let closest_cards_y = closest_card.getBoundingClientRect().y + 100;
+<!-- Go to www.addthis.com/dashboard to customize your tools --> <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-4f524fc67895caa0"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-24T8MY0VXF"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-            let closest_cards_theta = Math.atan2(Math.abs(closest_cards_y - center_of_wheel.y), Math.abs(closest_cards_x - center_of_wheel.x));
-            closest_cards_theta = closest_cards_theta * (180 / Math.PI);
+  gtag('config', 'G-24T8MY0VXF');
+	
+	muteshow()
+</script>
 
-            let theta_between = Math.abs(closest_cards_theta - snap_point.theta);
+<!-- disable autoads for premium users -->
 
-            // make a positive or negative degree shift
-            if (closest_cards_x > center_of_wheel.x && closest_cards_y <= center_of_wheel.y) { // QI
-                theta_between = closest_cards_theta > snap_point.theta ? theta_between : -1.0 * theta_between;
-            } else if (closest_cards_x <= center_of_wheel.x && closest_cards_y <= center_of_wheel.y) { // QII
-                theta_between = closest_cards_theta > snap_point.theta ? -1.0 * theta_between : theta_between;
-            } else if (closest_cards_x <= center_of_wheel.x && closest_cards_y > center_of_wheel.y) { // QIII
-                theta_between = closest_cards_theta > snap_point.theta ? theta_between : -1.0 * theta_between;
-            } else if (closest_cards_x > center_of_wheel.x && closest_cards_y >= center_of_wheel.y) { // QIV
-                theta_between = closest_cards_theta > snap_point.theta ? -1.0 * theta_between : theta_between;
-            }
 
-            wheel.style.transitionDelay = '0.1s';
-            wheel.style.transitionDuration = '1.0s';
-            wheel.style.transform = `translate(-50%, -50%) rotate(${wheel_theta + theta_between}deg)`;
+	
+<script>
 
-            cards.forEach(card => {
-                card.style.transitionDelay = '0.1s';
-                card.style.transitionDuration = '1.0s'
+createdByThisPremiumUser=1</script>
+	
+<div class="leftcurtain"><img src="images/images-frontcurtainRed.jpg"></div>
+<div class="rightcurtain"><img src="images/images-frontcurtainRed.jpg"></div>
+<div id="container" style="padding-top:35px">
 
-                if (closest_card == card) {
-                    card.style.transform = `translate(-50%, -50%) rotate(${-1.0 * (wheel_theta + theta_between)}deg) scale(1.0)`;
-                    card.style.zIndex = 100;
-                } else {
-                    card.style.transform = `translate(-50%, -50%) rotate(${-1.0 * (wheel_theta + theta_between)}deg) scale(0.5)`;
-                    card.style.zIndex = 1;
-                }
-            });
+<div id="wrapper" class="clearfix">
+	
+	
+	<div class="theFacde"></div>
+	
 
-            wheel_theta = wheel_theta + theta_between;
+<script>
 
-            setTimeout(() => {
-                snap_in_progress = false;
-            }, 200);
-        }
-    </script>
+
+	
+  ismsDown = false;
+  prevX = 0;
+  prevY = 0;
+  midX = 250;
+  midY = 250;
+  
+  drawText = true;
+
+  function wheelmsDown(e) {
+  
+	 wheeldiv = document.getElementById("wheelcanvas");
+    midX = wheeldiv.offsetLeft+wheelRadius+wheeldiv.offsetParent.offsetLeft;
+	 midY = wheeldiv.offsetTop+wheelRadius+wheeldiv.offsetParent.offsetTop;
+	 prevX=e.clientX;
+	 prevY=e.clientY;
+    ismsDown = true;
+  }
+  function wheelmsMoving(e) {
+	if (ismsDown == true) {
+	 x = e.clientX+document.documentElement.scrollLeft+document.body.scrollLeft;
+	 y = e.clientY+document.documentElement.scrollTop+document.body.scrollTop;
+	 if (x > midX) {
+		if (y > midY) {
+			startAng += ((prevX-x)-(prevY-y)) *0.01;
+		} else {
+	 	 startAng += (0-(prevX-x)-(prevY-y)) *0.01;
+		}
+	 } else {
+	 	if (y > midY) {
+			startAng += ((prevX-x) + (prevY-y)) *0.01;
+		} else {
+	 	 startAng += (0-(prevX-x) + (prevY-y)) *0.01;
+		}
+	 }
+	 prevX=x;
+	 prevY=y;
+	 drawWheel(false);
+	 }
+  }
+  function wheelmsMoving2(x,y) {
+	if (ismsDown == true) {
+	 if (x > midX) {
+		if (y > midY) {
+			startAng += ((prevX-x)-(prevY-y)) *0.01;
+		} else {
+	 	 startAng += (0-(prevX-x)-(prevY-y)) *0.01;
+		}
+	 } else {
+	 	if (y > midY) {
+			startAng += ((prevX-x) + (prevY-y)) *0.01;
+		} else {
+	 	 startAng += (0-(prevX-x) + (prevY-y)) *0.01;
+		}
+	 }
+	 prevX=x;
+	 prevY=y;
+	 drawWheel(false);
+	 }
+  }
+  function wheelmsUp(e) {
+    ismsDown = false;
+  }
+</script>
+
+
+		<div id="primary" style="z-index:99">
+		  <div id="content" role="main">
+			
+			<center>
+
+<script src="js/3.6.0-jquery.min.js"></script>
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+<script src="js/1.12.1-jquery-ui.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Anonymous+Pro&display=swap');
+#fruitCtr{display:none;font-family: 'Anonymous Pro', monospace;position:relative;margin-top:-20px}
+	
+.fruits
+{
+height:0.8em;
+width:0.8em;
+}
+	
+#ctr
+{
+padding-top:5em
+}
+.chosen
+{
+display:none;
+height:2em;
+top: 13.5em;
+background:yellow;
+box-shadow: 0px 0px 20px 10px yellow;
+z-index:3;
+}
+	
+.mask1, .mask2
+{
+height:4em;
+background:black;
+background-image: url("./images/darkcurtainRed.jpg");
+background-position:0 60%;
+z-index:9;
+}
+.mask1, .mask2, .names, .chosen, .window, .frame
+{
+width:50%;
+position:absolute;
+left:25%;
+margin:0;
+}
+
+.mask1
+{
+top:0em;
+opacity:100%;
+background-position:0 0%;
+}
+	
+.mask2
+{
+top:26em;opacity:100%;
+height:5em;
+}
+
+	
+#fruitCtr
+{
+cursor:pointer;	
+}
+	
+
+.names, .window
+{
+height:11em;
+top:2em;
+font-size:2em;	
+color:black;
+}
+	
+.framez
+{
+border-radius:1em;
+border: 0.5em groove #A0A0A0;
+}
+	
+.window
+{
+border-radius:1em;
+background: rgb(0,0,0);
+background: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(217,30,30,1) 33%, rgba(217,30,30,1) 66%, rgba(0,0,0,1) 100%);
+z-index:3;
+}
+	
+.frame
+{
+top: 2em;
+font-size: 2em;
+height: 9.5em;
+left: 24.5%;
+width: 49%;
+z-index: 999;
+}
+	
+.names
+{
+z-index:4;
+overflow:hidden;
+height:13em;
+}
+	
+
+.button {
+position:absolute;
+top:26em;opacity:100%;
+width:20%;
+left:40%;
+z-index:10;
+font-size: 1em;
+color: #fff;
+
+}
+	
+.button {
+    display: block;
+    margin: 10px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+
+    box-shadow: 0 8px 0 black, 0 15px 20px rgba(0, 0, 0, .35);
+    -webkit-transition: -webkit-box-shadow .1s ease-in-out;
+    -moz-transition: -moz-box-shadow .1s ease-in-out;
+    -o-transition: -o-box-shadow .1s ease-in-out;
+    transition: box-shadow .1s ease-in-out;
+   
+}
+
+.button span {
+	font-family: Arial Black, Arial, sans-serif;
+    display:block;
+    padding: 20px 30px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+    -webkit-box-shadow: inset 0 -1px 1px rgba(255, 255, 255, .15);
+    -moz-box-shadow: inset 0 -1px 1px rgba(255, 255, 255, .15);
+    box-shadow: inset 0 -1px 1px rgba(255, 255, 255, .15);
+    line-height: 1;
+    text-shadow: 0 -1px 1px rgba(175, 49, 95, .7);
+    -webkit-transition: background-color .2s ease-in-out, -webkit-transform .1s ease-in-out;
+    -moz-transition: background-color .2s ease-in-out, -moz-transform .1s ease-in-out;
+    -o-transition: background-color .2s ease-in-out, -o-transform .1s ease-in-out;
+    transition: background-color .2s ease-in-out, transform .1s ease-in-out;
+	
+border-color: #7c7c7c;
+background: rgb(0,0,0);
+background: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(158,158,158,1) 10%, rgba(158,158,158,1) 90%, rgba(0,0,0,1) 100%);
+}
+
+.button:hover span {
+    background-color: #ec6a9c;
+    text-shadow: 0 -1px 1px rgba(175, 49, 95, .9), 0 0 5px rgba(255, 255, 255, .8);
+}
+
+
+
+.button:active span {
+    -webkit-transform: translate(0, 4px);
+    -moz-transform: translate(0, 4px);
+    -o-transform: translate(0, 4px);
+    transform: translate(0, 4px);
+}
+	
+	</style>
+<script>
+
+//entries="NATHAN*CONNOR*JONATHAN*HARRY*CALLUM*AARON*ASHLEY*BRADLEY*JACOB*KIERAN*SCOTT*SAM*JOHN*BEN*MOHAMMED*NICHOLAS*KYLE*CHARLES*MARK*SEAN*EDWARD*STEPHEN*RICHARD*ALEX*PETER*DOMINIC*JOE*REECE*LEE*RHYS*STEVEN*ANTHONY*CHARLIE*PAUL*CRAIG*JASON*DALE*ROSS*CAMERON*LOUIS*DEAN*CONOR*SHANE*ELLIOT*PATRICK*MAX*SHAUN*HENRY*SIMON*TIMOTHY*MITCHELL*BILLY*PHILIP*JOEL*JOSH*MARCUS*DYLAN*CARL*ELLIOTT*BRANDON*MARTIN*TOBY*STUART*GARETH*DANNY*CHRISTIAN*TOM*DECLAN*KARL*MOHAMMAD*MATHEW*JAY*OWEN*DARREN";
+//entries=entries.split("*");
+	
+
+$(document).ready(function(){
+	$( "#fruitCtr" ).click(function() {
+	spin()
+	});
+
+});	
+	
+	
+function shuffleFruits()
+{
+if(currentSkin=="fruit" && removingName==false){
+	new Noty({type: 'success',layout: 'bottomLeft',theme: 'nest',text: "All names reshuffled and rewritten!",timeout: '4000',progressBar: true, closeWith: ['click'],killer: true,}).show();
+}
+removingName=false 
+for(n=0;n<1000;n++)
+	{
+	rand1=Math.floor(Math.random()*entries.length);
+	rand2=Math.floor(Math.random()*entries.length);
+	temp=entries[rand1]
+	entries[rand1]=entries[rand2]
+	entries[rand2]=temp
+	}
+}
+	
+
+	
+function spinFruits()
+	{
+	$(".chosen").show()
+	 $( ".names" ).animate({
+		top: "0.9em"
+	  }, fruitSpeed, "linear", function() {
+		// Animation complete.
+		 rewriteFruits();
+		 if(fruitSpeed<=40){fruitSpeed+=0.3;}
+		 if(fruitSpeed>40){fruitSpeed+=(Math.round(fruitSpeed/(5+Math.random()*5)))}
+		if(fruitSpeed>75){fruitSpeed+=(fruitSpeed/(5+Math.random()*15))}
+		 if(fruitSpeed<250){spinFruits()}
+		 else{suspense();}
+	  });	
+		
+	}
+	
+function suspense()
+{
+	$( ".names" ).animate({top: "0.3em"}, 500, "linear", function() {
+		$( ".names" ).effect( "shake" , { direction: "up", times: 2, distance: 5}, 1000, function(){setTimeout("revealFruits()",250)} );
+		
+	  });	
+}
+	
+function revealFruits()
+	{
+	rand=Math.floor(Math.random()*2)
+		nmnum=0;
+		if(rand==1)
+			{
+			$( ".names" ).animate({top: "0.8em"}, 500, "swing")
+			for(n=0;n<6;n++)
+				{
+				nametoremove=nmnum
+				nmnum++;if(nmnum==entries.length){nmnum=0}	
+				}
+			nametoremove=nmnum
+			}
+		else{
+			$( ".names" ).animate({top: "-0.2em"}, 500, "swing")
+			for(n=0;n<7;n++)
+				{
+				nametoremove=nmnum
+				nmnum++;if(nmnum==entries.length){nmnum=0}	
+				}
+			nametoremove=nmnum
+			}
+	fsize="30px"
+	//alert(nametoremove)
+	text=entries[nametoremove]
+	celebrate()
+	setTimeout("showWellDone()",750)
+	}
+	
+fruits="apple*orange*watermelon*cherry*grapes*lemon";fruits=fruits.split("*");
+
+fruitstarter=0
+function rewriteFruits()
+	{
+	first=entries.shift();
+	entries.push(first);
+	$(".names").html("");
+	$(".names").css("top","2em");
+	fruitstarter++;if(fruitstarter>=fruits.length){fruitstarter=0}
+	fruitcounter=fruitstarter
+	he=0
+	nmnum=0
+	for(n=0;n<12;n++)
+		{
+		if(n<7){he+=0.1}
+		else{he-=0.1}
+		if(n>3 && n<7){he=0.8}
+		theEnt=entries[nmnum]
+		fruitcounter++;if(fruitcounter>=fruits.length){fruitcounter=0}
+		if(n!=0 && n!=14){$(".names").append("<img style='height:"+he+"em; width:0.8em' src='../fruity/"+fruits[fruitcounter]+".png' /> "+entries[nmnum]+" <img style='height:"+he+"em; width:0.8em'  src='../fruity/"+fruits[fruitcounter]+".png' /><br>")}
+		else{$(".names").append(entries[n]+"<br>")}
+		nmnum++;if(nmnum==entries.length){nmnum=0}
+		}
+	}
+</script>
+	
+
+
+<!--<body onload="rewriteFruits()">-->
+
+
+<div id="fruitCtr">
+	<div class="mask1"></div>
+	<div class="mask2"></div>
+	<div class="names"></div>
+	<div class="window"></div>
+	<div class="frame"></div>
+	<div class="chosen"></div>
+	<span class="button">
+    <span>CLICK TO SPIN!</span>
+</span>
+	
+</div>
+	
+				
+<canvas onclick="spin();" id="wheelcanvas" onmousedown="wheelmsDown(event);" onmousemove="wheelmsMoving(event);" onmouseup="wheelmsUp(event); spin();" onmouseout="wheelmsUp(event);" width="300" height="300">
+			    <br><br><div style="background:white; padding:15px;"><br><a href="wheel.html">Spin Again</a></div><br><br>Your browser cannot display the wheel of choices. Please upgrade to a newer browser that supports HTML5.<br><br>
+</canvas>
+
+<audio id="wheelAudio">
+  <source src="./sounds/wheel.ogg" type="audio/ogg">
+  <source src="./sounds/wheel.mp3" type="audio/mpeg">
+</source></source></audio>
+<audio id="clapAudio">
+  <source src="./sounds/clap.ogg" type="audio/ogg">
+  <source src="./sounds/clap.mp3" type="audio/mpeg">
+</source></source></audio>
+
+<script type="text/javascript">
+	muted=false
+function playClap() {
+	if(muted==true)return{}
+	audio = document.getElementById("clapAudio");
+	audio.play();
+}
+function playSound() {
+	if(muted==true)return{}
+	audio = document.getElementById("wheelAudio");
+	audio.play();
+}
+
+wheeldiv = document.getElementById("wheelcanvas");
+
+if (wheeldiv.addEventListener)
+{
+	  wheeldiv.addEventListener('touchmove', function(e) {
+		e.preventDefault();
+		touch = e.touches[0];
+		 wheelmsMoving2(touch.pageX,touch.pageY);
+	}, false);
+	
+		wheeldiv.addEventListener('touchstart', function(e) {
+		e.preventDefault();
+		touch = e.touches[0];
+		 wheelmsDown(touch);
+	}, false);
+	
+	wheeldiv.addEventListener('touchend', function(e) {
+		e.preventDefault();
+		touch = e.touches[0];
+		 wheelmsUp(touch);
+		 spin();
+	}, false);
+} 
+else if (wheeldiv.attachEvent)
+{
+	  wheeldiv.attachEvent('touchmove', function(e) {
+		e.preventDefault();
+		touch = e.touches[0];
+		 wheelmsMoving2(touch.pageX,touch.pageY);
+	}, false);
+	
+	wheeldiv.attachEvent('touchstart', function(e) {
+		e.preventDefault();
+		touch = e.touches[0];
+		 wheelmsDown(touch);
+	}, false);
+	
+	wheeldiv.attachEvent('touchend', function(e) {
+		e.preventDefault();
+		touch = e.touches[0];
+		 wheelmsUp(touch);
+		 spin();
+	}, false);
+}
+
+
+
+
+</script>
+
+
+<div>
+<div id="addwheeldiv"></div>
+
+</div>
+	
+					<h2 class="theTite background-color" style="position:relative;z-index:9999">Random Name Picker!</h2>
+				
+				</center></div></div>
+<div id="ops">
+
+<h4 style="color:white;">
+	<span class="editit">
+	<a href="javascript:addNames().html"><span class="but hvr-rectangle-out">Edit/Save</span></a>
+	<a target="_blank" href="index.html"><span class="but hvr-rectangle-out">New</span></a> 
+	<a href="javascript:showEmbedOptions().html"><span class="edem but hvr-rectangle-out">Share/Embed</span></a>
+	<a class="fscreen" href="javascript:toggleFullScreen().html"><span class="but hvr-rectangle-out fscreen">Fullscreen</span></a>
+		
+	<a class="fscreen" href="javascript:fruity().html"><span class="but hvr-rectangle-out skin">Switch to Slot Machine</span></a>
+		
+	<!--<a href="javascript:toggleTheme()">_</a>-->
+	</span> 
+</h4>
+</div><br>
+			
+<div id="ads1" style="text-align: center; position:relative; z-index:999999999;width:90%;margin:auto" align="center">
+
+
+
+<script async src="js/js-adsbygoogle.js"></script>
+
+<!-- Random Name Picker -->
+<ins class="adsbygoogle" style="display:inline-block;width:728px;height:90px" data-ad-client="ca-pub-8912794096382956" data-ad-slot="7098309720"></ins>	
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+</div>
+				
+
+<br>
+<script>
+	
+currentSkin="wheel";
+function fruity()
+	{
+	$("#wellDone").hide();
+	if(spinning==1){new Noty({type: 'success',layout: 'bottomLeft',theme: 'nest',text: "Please wait till current spin is finished!",timeout: '4000',progressBar: true, closeWith: ['click'],killer: true,}).show();return}
+	if(currentSkin=="wheel")
+		{
+		$(".skin").html("Switch to Roulette Wheel");
+		currentSkin="fruit"
+		$("#wheelcanvas").css("opacity","0");//$("#wheelcanvas").hide() 
+		$("#fruitCtr").show()
+		rewriteFruits()
+		}
+	else
+		{
+		currentSkin="wheel"
+		$(".skin").html("Switch to Slot Machine");
+		$("#wheelcanvas").css("opacity","1");//$("#wheelcanvas").hide() 
+		$("#fruitCtr").hide()
+		}
+	}
+	
+function removAds()
+{$("#ads1").hide();$("#ads2, .asd, .adsbygoogle").hide()}
+function showAds()
+{
+if(createdByPremiumUser==1 || premiumUserName!=""){return;}
+else{$("#ads1").show();$("#ads2, .adsbygoogle").show()}
+}
+</script>
+
+            
+
+		  </div><!-- #content -->
+		</div><!-- #primary -->
+
+    <!-- end of #wrapper -->
+    <!-- end of #container -->
+
+
+
+<div id="wellDoneWrapper">
+
+    <div id="wellDone" style="display:none;border:2px #FFCC66 solid; -webkit-border-radius: 10px;-moz-border-radius: 10px;border-radius: 10px;position:absolute;text-align:center;z-index:999999;background:#510f11;color:white;padding:20px;">
+    <span id="wellDoneNAME"></span>
+    <br>
+    <span id="ads2">
+<script async src="js/js-adsbygoogle.js" crossorigin="anonymous"></script>
+<!-- Random Name Picker - name announced (new) -->
+<ins class="adsbygoogle" style="display:inline-block;width:300px;height:250px" data-ad-client="ca-pub-8912794096382956" data-ad-slot="6869066384"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+     
+		<p style="font-size:0.5em !important">Don't like ads? <span style="color:white !important;text-decoration:underline"><a style="color:white !important;text-decoration:underline" target="_blank" href="https://www.activehistory.co.uk/classtools_premium/index.htm">GO PREMIUM!</a></span></p>
+     </span>
+
+	<span class="asd" style="display:none">
+<script async src="js/js-adsbygoogle.js" crossorigin="anonymous"></script>
+<!-- Random Name Picker - name announced (small screens) -->
+<ins class="adsbygoogle" style="display:inline-block;width:468px;height:60px" data-ad-client="ca-pub-8912794096382956" data-ad-slot="7682083353"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+     <br>
+     </span>
+		
+    <span id="wellDoneREMOVE"></span>
+    
+    </div>
+
+</div>
+
+
+
+<div id="savedBoxWrapper">
+
+    <div id="savedBox" style="display:none;border:2px #FFCC66 solid; -webkit-border-radius: 10px;-moz-border-radius: 10px;border-radius: 10px;position:absolute;text-align:center;z-index:5000000;background:#510f11;color:white;padding:20px;">
+    <span id="savedBoxNAME"></span>
+    <br>
+    <span id="ads3">
+<script async src="js/js-adsbygoogle.js"></script>
+<!-- Random Name Wheel - link generated -->
+<ins class="adsbygoogle" style="display:inline-block;width:300px;height:250px" data-ad-client="ca-pub-8912794096382956" data-ad-slot="4611369448"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+     <br>
+     </span>
+    <span id="savedBoxOK"></span>
+    
+    </div>
+
+</div>
+
+
+
+<style>
+#textboxWrap a:link, #textboxWrap a:active, #textboxWrap a:visited
+{
+text-decoration:none;
+color:white;	
+}
+
+#textboxWrap
+{
+	display:none;
+	border:1px black solid;
+	position:absolute;
+	z-index:101;
+	background:darkslateblue;
+	color:white;
+	padding:20px;
+	z-index:99999;
+	
+}
+#textbox, #titleBox
+{
+	font-size:large;
+	font-family: 'Rye', cursive;
+	width:400px;
+}
+	
+.background-color {
+  color: #FFF !important;	
+  text-align: center;
+  background: rgba(255, 253, 160, 1);
+  background: -webkit-linear-gradient( left, #0FF 0%, #0F0 25%, #FF0 50%, #FFF 75%, #0FF 100% ) repeat;
+  -webkit-background-clip: text;
+  -ms-background-clip: text;
+  -moz-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -ms-text-fill-color: transparent;
+  -moz-text-fill-color: transparent;
+  text-fill-color: transparent;
+  -webkit-animation-name: masked-animation;
+  -webkit-animation-duration: 50s;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-timing-function: linear;
+}
+
+@-webkit-keyframes masked-animation {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: -8000px -3000px;
+  }
+}
+	
+canvas
+	{cursor:pointer;}
+</style>
+
+<div id="wrape">
+<div id="textboxWrap">
+<form name="test" id="test">
+	<h3>Title:</h3>
+	<input type="text" name="titleBox" id="titleBox" value="Random Name Picker!">
+	<p>&nbsp;</p><h3>Names (one per line):</h3>
+    <textarea rows="12.5" name="textbox" id="textbox" style="font-size:1em;overflow: scroll;">test</textarea>
+    <p>&nbsp;</p><h3>Curtain Theme:</h3>
+	<select style="width:100%;font-size:1.5em" id="cols" onchange="toggleTheme(this.value);">
+	  <option value="Red">Red</option>
+	  <option value="Blue">Blue</option>
+	  <option value="Green">Green</option>
+	  <option value="Purple">Purple</option>
+	</select>
+    
+<p>&nbsp;</p>
+	
+	<script>
+wheelcs=new Array();
+wheelcs[0]=["ffff00","ff0000","ffffff","ff5800","c71585","00ffff","fc74fd","9efd38","ff00ff"]
+wheelcs[1]=["e62651","eb7532","f7d038","a3e048","49da9a","34bbe6","4355db","d23be7"]
+wheelcs[2]=["2d00f7","6a00f4","8900f2","a100f2","b100e8","bc00dd","d100d1","db00b6","e500a4","f20089"]
+wheelcs[3]=["6a040f","9d0208","d00000","dc2f02","e85d04","f48c06","faa307","ffba08"]
+wheelcs[4]=["ff0000","ffffff","0000ff"]
+wheelcs[5]=["007f5f","2b9348","55a630","80b918","aacc00","bfd200","d4d700","dddf00","eeef20","ffff3f"]
+wheelcs[6]=["4da954","5fce73","74e4a6"]
+wheelcs[7]=["b9382f","EA373E","EC6167"]
+wheelcs[8]=["E5B53E","F7Ce46","FAe24c"]
+wheelcs[9]=["3d88c2","57C0f9","76dafb"]
+wheelcs[10]=["754dac","Ad65e3","d099ec"]
+	
+
+	
+</script>
+<style>
+.wheelcols
+{
+position:relative;
+margin:auto;
+width:400px;
+}
+	
+.wheelcols img
+{
+height: 24px; width: 120px; padding-right:5px
+}
+	
+.colopts
+{
+display:none;
+}
+	
+
+.themeDiv, .colopts{cursor:pointer}
+</style>
+
+	
+<div class="wheelcols">
+<div class="themeDiv"><h3>Wheel Theme:</h3>
+<img class="currentTheme" src="images/wheelthemes-1.jpg"></div>
+<div class="colopts">
+<img src="images/wheelthemes-0.jpg" id="0">
+<img src="images/wheelthemes-1.jpg" id="1">	
+<img src="images/wheelthemes-2.jpg" id="2">	
+<img src="images/wheelthemes-3.jpg" id="3">	
+<img src="images/wheelthemes-4.jpg" id="4">	
+<img src="images/wheelthemes-5.jpg" id="5">
+<img src="images/wheelthemes-6.jpg" id="6">
+<img src="images/wheelthemes-7.jpg" id="7">
+<img src="images/wheelthemes-8.jpg" id="8">
+<img src="images/wheelthemes-9.jpg" id="9">
+<img src="images/wheelthemes-10.jpg" id="10">
+</div>
+</div>
+	
+<script>
+
+$( ".themeDiv" ).click(function() {
+	if($(".colopts").is(":visible")){$(".colopts").hide();$(".currentTheme").show()}
+	else{$(".colopts").show();$(".currentTheme").hide()}
+});
+$( ".colopts img" ).click(function() {
+	colors=wheelcs[($(this).attr("id"))]
+	$(".currentTheme").attr("src","./wheelthemes/"+$(this).attr("id")+".jpg")
+	$(".colopts").hide();$(".currentTheme").show()
+	wheelTheme=$(this).attr("id")
+});
+	
+$(document).mouseup(function(e) 
+{
+    var container = $(".wheelcols");
+    if (!container.is(e.target) && container.has(e.target).length === 0) 
+    {
+    $('.colopts').hide();$(".currentTheme").show()
+    }
+});
+</script>	
+<br>
+	
+<span id="entriesToggle" style="display:none"><span id="allNms" style="display:none;text-decoration:underline;"><a href="javascript:fullList().html">Show original full list</a></span> <span id="remNms" style="text-decoration:underline;"><a href="javascript:editedList().html">Only show remaining names</a></span><br></span>
+	
+	<a href="javascript:javascript:createNames(0)"><span class="but hvr-rectangle-out" id="but1">Create</span></a>
+    <a href="javascript:createNames(1);save().html"><span class="but hvr-rectangle-out" id="but1">Save this list</span></a>
+	<span style="position:absolute;top:0px;right:0px"><a href="javascript:javascript:%24('#textboxWrap').hide();toggle(500);addingNames=0;"><span class="but hvr-rectangle-out" id="but1">X</span></a></span>
+
+  </form>
+</div>
+</div>
+<img class="seats" src="images/images-seatsRed.png">
+
+<script>
+
+function fullList()
+{
+$("#allNms, #remNms").toggle()
+document.test.textbox.value="";
+	for(n=0;n<origentries.length;n++)
+		{
+		if(origentries[n]!=""){document.test.textbox.value+=origentries[n]+"\n"}	
+		}	
+}
+
+function editedList()
+{
+$("#allNms, #remNms").toggle()
+document.test.textbox.value="";
+	for(n=0;n<entries.length;n++)
+		{
+		if(entries[n]!=""){document.test.textbox.value+=entries[n]+"\n"}	
+		}	
+}
+
+
+
+
+<!-- START OF EMBED OPTIONS -->
+function showEmbedOptions()
+{
+if(spinning==1){return}
+temp=self.location+"";
+if(temp.indexOf("_")==-1)	//homepage.
+	{
+		//Needs to be saved.
+		apprise("<b>You need to save your work before you can get the embed code.");
+		return;
+	}
+apprise(document.getElementById("shareDivOptions").innerHTML);
+}
+
+function popup(s)
+{
+$('.appriseOverlay').remove();$('.appriseOuter').remove()
+if(s=="QR")
+	{
+	apprise("<img src='https://chart.apis.google.com/chart?chs=250x250&amp;cht=qr&amp;chl=https%3A%2F%2Fwww.classtools.net%2Frandom-name-picker&amp;choe=UTF-8' alt='QR' />");
+	}
+if(s=="widget")
+	{
+	apprise('<b>URL:<br><input size="75" type="text" value="https://www.classtools.net/random-name-picker" /><p><b>Embed Code:<br><textarea rows="10" cols="75"><p style="position:relative;margin:auto;overflow:hidden;width:80%;padding-top:55%;"><iframe iframe src="https://www.classtools.net/random-name-picker" style="position: absolute;top:0;left:0;bottom:0;right:0;width:100%;height:100%;border:0">');
+	}
+}
+	
+
+
+
+</script>
+<div style="display:none" id="shareDivOptions">
+    <ul>
+    <li><a href="javascript:popup('widget').html">URL Link / Embed Code</a></li>
+    <li><a href="javascript:popup('QR').html">QR Code</a></li>
+    <li><a href="download.html">Download Web Shortcut</a></li>
+    
+    </ul>
+</div>
+<div id="preloadQR" style="display:none"><img src="images/chart" alt="QR"></div>
+
+<!-- END OF EMBED OPTIONS -->
+
+
+
+<form name="reloader" id="reloader" method="POST">
+<input type="hidden" name="pw" id="pw" value="">
+</form>
+
+
+
+
+
+<style>
+#logo2
+{
+position:absolute;top:20px;left:10px;z-index:999;cursor:pointer;
+width:200px;height:400px;/*max dimensions of image*/
+}
+	
+</style>
+<div id="logo2">
+<a href="javascript:changelogo().html"><img style="max-width:100%;max-height:100%;margin:auto;display:table-cell" src="images/profiles-demo-logo.png">	</a>
+</div>
+<script>
+function changelogo()
+	{
+	if(premiumUser==0){apprise("This is a CLASSTOOLS PREMIUM feature.<br>Please <b><a href='javascript:showFields()'>LOGIN<b>, or <a target='_blank' href='https://www.activehistory.co.uk/classtools_premium/index.htm'><b>CLICK HERE to sign up!");return}	
+	else{window.open("/profiles/index.php");}
+	}
+	
+</script>	 
+
+
+
+
+
+
+
+
+<style>
+#logo
+{
+position:absolute;top:20px;right:10px;z-index:999;cursor:pointer;
+width:200px;height:200px;/*max dimensions of image*/
+}
+	
+</style>
+<div id="logo">
+<a href="www.classtools.html"><img style="max-width:100%;max-height:100%" src="images/www.classtools.net-_logo.png">	</a>
+</div>
+
+<style>
+
+#aud{
+position:absolute;
+width:100%;
+bottom:-500px;
+z-index:101;
+}
+#ops{
+position:relative;
+z-index:99999;
+}
+#aud img{
+width:100%;
+}
+</style>
+
+
+<script>
+	setInterval('$( "#ads1" ).effect( "shake" );console.log(1)',30000);
+</script>
+
+
+<script type="text/javascript" src="js/confet-script.js"></script>
+
+<style>
+.preloadingBlurb
+{
+position:absolute;
+text-align:center;
+display:block;
+width:100%;
+height:100%;
+z-index:10000000;
+top:-50px;left:0px;
+
+color:black;	
+background: #ffff42; /* Old browsers */
+background: -moz-linear-gradient(top,  #ffff42 51%, #e512ad 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(51%,#ffff42), color-stop(100%,#e512ad)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #ffff42 51%,#e512ad 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #ffff42 51%,#e512ad 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #ffff42 51%,#e512ad 100%); /* IE10+ */
+background: linear-gradient(to bottom,  #ffff42 51%,#e512ad 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffff42', endColorstr='#e512ad',GradientType=0 ); /* IE6-9 */
+	
+background:black;
+}
+
+
+.loader-inner {
+    bottom: 0;
+    height: 60px;
+    left: 0;
+    margin: auto;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 100px;
+}
+
+.loader-line-wrap {
+    animation: 
+		spin 2000ms cubic-bezier(.175, .885, .32, 1.275) infinite
+	;
+    box-sizing: border-box;
+    height: 50px;
+    left: 0;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    transform-origin: 50% 100%;
+    width: 100px;
+}
+.loader-line {
+    border: 4px solid transparent;
+    border-radius: 100%;
+    box-sizing: border-box;
+    height: 100px;
+    left: 0;
+    margin: 0 auto;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 100px;
+}
+.loader-line-wrap:nth-child(1) { animation-delay: -50ms; }
+.loader-line-wrap:nth-child(2) { animation-delay: -100ms; }
+.loader-line-wrap:nth-child(3) { animation-delay: -150ms; }
+.loader-line-wrap:nth-child(4) { animation-delay: -200ms; }
+.loader-line-wrap:nth-child(5) { animation-delay: -250ms; }
+
+.loader-line-wrap:nth-child(1) .loader-line {
+    border-color: hsl(0, 80%, 60%);
+    height: 90px;
+    width: 90px;
+    top: 7px;
+}
+.loader-line-wrap:nth-child(2) .loader-line {
+    border-color: hsl(60, 80%, 60%);
+    height: 76px;
+    width: 76px;
+    top: 14px;
+}
+.loader-line-wrap:nth-child(3) .loader-line {
+    border-color: hsl(120, 80%, 60%);
+    height: 62px;
+    width: 62px;
+    top: 21px;
+}
+.loader-line-wrap:nth-child(4) .loader-line {
+    border-color: hsl(180, 80%, 60%);
+    height: 48px;
+    width: 48px;
+    top: 28px;
+}
+.loader-line-wrap:nth-child(5) .loader-line {
+    border-color: hsl(240, 80%, 60%);
+    height: 34px;
+    width: 34px;
+    top: 35px;
+}
+
+@keyframes spin {
+    0%, 15% {
+		transform: rotate(0);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}
+</style>
+<div class="preloadingBlurb">
+	<div class="loader-inner">
+		<div class="loader-line-wrap">
+			<div class="loader-line"></div>
+		</div>
+		<div class="loader-line-wrap">
+			<div class="loader-line"></div>
+		</div>
+		<div class="loader-line-wrap">
+			<div class="loader-line"></div>
+		</div>
+		<div class="loader-line-wrap">
+			<div class="loader-line"></div>
+		</div>
+		<div class="loader-line-wrap">
+			<div class="loader-line"></div>
+		</div>
+	</div>
+</div>
+
+<script>
+setTimeout("$('.preloadingBlurb').hide()",7000)//
+</script>
+
 </body>
-
 </html>
