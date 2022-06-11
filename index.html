@@ -1,103 +1,198 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
 
-  <head>
-	  
-	<!-- Global site tag (gtag.js) - Google Analytics -->
-	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-55356360-4"></script>
-	<script>
-	  window.dataLayer = window.dataLayer || [];
-	  function gtag(){dataLayer.push(arguments);}
-	  gtag('js', new Date());
-	  gtag('config', 'UA-55356360-4');
-	</script>
+        .wheel {
+            width: 300px;
+            height: 200px;
+            /* background-color: blue; */
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
-    <meta name="description" content="">
-    <meta name="author" content="">
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
 
-    <title>tess.casino</title>
-
-    <!-- Bootstrap core CSS -->
-    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-	<link href="https://afeld.github.io/emoji-css/emoji.css" rel="stylesheet">
-	
-
-  </head>
-
-  <body>
-
-
-    
-    <!-- Page Content -->
-	<div class="container-fluid">
-      <div class="row justify-content-center">
-        <div class="col-lg-12 text-center">
-
-          <h1 class="mt-5">TESS ROULETTE</h1>
-          <p class="lead">Feeling lucky?  <i class="em em-slot_machine"></i></p>
-		</div>
-
-	<div class="row justify-content-center">
-  		  <a class="btn btn-lg btn-success" href='index.html' role=button>HIT ME</a>			  
-        </div>
-	  </div>
-      <div class="row justify-content-center">
-		  <div class="col-lg-8">
-		  <div class="embed-responsive embed-responsive-21by9 center-block">
-  		  	<iframe class="frame embed-responsive-item" src=""></iframe>
-		  </div>
-	  	  </div>
-	  </div>  
-      <div class="row justify-content-around">
-	      <div class="col-2 text-center"></div>
-	      <div class="col-2 text-center">
-			  <button class="btn btn-dark" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-			    HOUSE RULES
-			  </button> 
-          </div>
-          
-    	   <div class="col-2 text-center">
-		<a class="btn btn-warning" id="exofop" target='_blank' role="button">DOUBLE DOWN</a>
-	      </div>
-
-	      <div class="col-2 text-center">
-		<a class="btn btn-success" id="royal-flush" target='_blank' role="button">ROYAL FLUSH</a>
-	      </div>
-	      
-	      <div class="col-2 text-center">
-                <a class="btn btn-danger" href='https://arxiv.org/submit' target='_blank' role=button>CASH OUT</a>
-              </div>
+        .card {
+            /* width: 90px;
+            height: 50px;
+            background-color: red; */
 
 
-	      <div class="col-2 text-center"></div>
-		  
-    <div class="col-lg-6 text-center w-50 p-6">
-	<div class="collapse" id="collapseExample">
-	  <div class="card card-body">
-		<p>These data are brought to you by the <a href="https://tess.gsfc.nasa.gov/">TESS mission</a>. 
-			This website was made by <a href="https://bedell.space">Megan Bedell</a>, <a href="https://astro.uchicago.edu/~bmontet/">Ben Montet</a>, and <a href="https://adina.feinste.in">Adina Feinstein</a>.</p>
-			
-		<p>You can download the data from MAST in <a href="https://outerspace.stsci.edu/display/TESS/5.0+-+Ways+To+Search+And+Interact+With+TESS+Data+At+MAST">a variety of ways</a>. What's plotted here is the median-divided PDCSAP lightcurve for random 2-minute-cadence targets. Check out the <a href="https://docs.lightkurve.org/">lightkurve python package</a> for many great tools for more in-depth interactive lightcurve generation and exploration.</p>
-	  </div>
-	</div>
-</div>
-		  
-	  	  			  
-      
-	  </div>
-	 </div>
-	  
+            width: 200px;
+            height: 200px;
+            border-radius: 100px;
+            box-shadow: 10px 10px 8px black;
+
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+
+            font-size: 2.5em;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wheel">
+        <img src="https://picsum.photos/1000/1200" class="card">
+        <img src="https://picsum.photos/1000/1100" class="card">
+        <img src="https://picsum.photos/1000/1300" class="card">
+        <img src="https://picsum.photos/1000/1400" class="card">
+        <img src="./icon-round-1080.png" class="card" style="box-shadow: none;">
+        <img src="https://picsum.photos/1000/1150" class="card">
+        <img src="https://picsum.photos/1000/1350" class="card">
+        <img src="https://picsum.photos/1000/1450" class="card">
+
+        <!-- <div class="card">0</div>
+        <div class="card">1</div>
+        <div class="card">2</div>
+        <div class="card">3</div>
+        <div class="card">4</div>
+        <div class="card">5</div>
+        <div class="card">6</div>
+        <div class="card">7</div> -->
+    </div>
+    <script>
+        let theta = Math.PI / 4.0;
+        let new_theta = 0.0;
+        let new_x = 0.0;
+        let new_y = 0.0;
+        let wheel_radius = 200.00;
+        let wheel_theta = 0.0;
+        const cards = document.querySelectorAll('.card');
+        const wheel = document.querySelector('.wheel');
+        const center = {
+            x: parseFloat(getComputedStyle(cards[0]).left),
+            y: parseFloat(getComputedStyle(cards[0]).top)
+        }
 
 
-    <!-- Bootstrap core JavaScript -->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="random.js"></script>
+        cards.forEach((card, index) => {
+            new_theta = theta * index;
+            new_x = (Math.cos(new_theta) * wheel_radius);
+            new_y = (-1.0 * Math.sin(new_theta) * wheel_radius);
+
+            // place the cards on the wheel
+            card.style.left = `${center.x + new_x}px`;
+            card.style.top = `${center.y + new_y}px`;
+        });
+
+        let wheel_in_progress = false;
+        let snap_in_progress = false;
+
+        document.addEventListener('wheel', event => {
+            if (snap_in_progress) {
+                return;
+            } else {
+                clearTimeout(wheel_in_progress);
+                // let scroll_speed = event.deltaY * 0.002;
+                let scroll_speed = (event.deltaY / 360) * 20;
+
+                wheel_theta = wheel_theta + scroll_speed;
+                wheel.style.transitionDelay = '0.0s';
+                wheel.style.transitionDuration = '0.0s';
+                wheel.style.transform = `translate(-50%, -50%) rotate(${wheel_theta}deg)`;
+
+                cards.forEach(card => {
+                    card.style.transitionDelay = '0.0s';
+                    card.style.transitionDuration = '0.0s';
+                    card.style.transform = `translate(-50%, -50%) rotate(${-1.0 * wheel_theta}deg)`;
+                });
+
+                wheel_in_progress = setTimeout(() => {
+                    snap_back();
+                }, 100)
+            }
+        });
+
+        const center_of_wheel = {
+            x: parseFloat(getComputedStyle(wheel).left),
+            y: parseFloat(getComputedStyle(wheel).top)
+        }
+
+        const snap_point = {
+            x: cards[2].getBoundingClientRect().x + 100,
+            y: cards[2].getBoundingClientRect().y + 100
+        }
+        snap_point.theta = Math.atan2(Math.abs(snap_point.y - center_of_wheel.y), Math.abs(snap_point.x - center_of_wheel.x));
+        snap_point.theta = snap_point.theta * (180 / Math.PI);
 
 
-  </body>
+        function snap_back() {
+            snap_in_progress = true;
+            let shortest_distance = Math.pow(((cards[3].getBoundingClientRect().x + 100) - snap_point.x), 2) + Math.pow(((cards[3].getBoundingClientRect().y + 100) - snap_point.y), 2);
+            shortest_distance = Math.sqrt(shortest_distance);
+            let closest_card = null;
+
+            cards.forEach((card, index) => {
+                let dx = (card.getBoundingClientRect().x + 100) - snap_point.x;
+                let dy = (card.getBoundingClientRect().y + 100) - snap_point.y;
+                let current_distance = Math.pow(dx, 2) + Math.pow(dy, 2);
+                current_distance = Math.sqrt(current_distance)
+
+                if (shortest_distance >= current_distance) {
+                    shortest_distance = current_distance;
+                    closest_card = card;
+                }
+            });
+
+            let closest_cards_x = closest_card.getBoundingClientRect().x + 100;
+            let closest_cards_y = closest_card.getBoundingClientRect().y + 100;
+
+            let closest_cards_theta = Math.atan2(Math.abs(closest_cards_y - center_of_wheel.y), Math.abs(closest_cards_x - center_of_wheel.x));
+            closest_cards_theta = closest_cards_theta * (180 / Math.PI);
+
+            let theta_between = Math.abs(closest_cards_theta - snap_point.theta);
+
+            // make a positive or negative degree shift
+            if (closest_cards_x > center_of_wheel.x && closest_cards_y <= center_of_wheel.y) { // QI
+                theta_between = closest_cards_theta > snap_point.theta ? theta_between : -1.0 * theta_between;
+            } else if (closest_cards_x <= center_of_wheel.x && closest_cards_y <= center_of_wheel.y) { // QII
+                theta_between = closest_cards_theta > snap_point.theta ? -1.0 * theta_between : theta_between;
+            } else if (closest_cards_x <= center_of_wheel.x && closest_cards_y > center_of_wheel.y) { // QIII
+                theta_between = closest_cards_theta > snap_point.theta ? theta_between : -1.0 * theta_between;
+            } else if (closest_cards_x > center_of_wheel.x && closest_cards_y >= center_of_wheel.y) { // QIV
+                theta_between = closest_cards_theta > snap_point.theta ? -1.0 * theta_between : theta_between;
+            }
+
+            wheel.style.transitionDelay = '0.1s';
+            wheel.style.transitionDuration = '1.0s';
+            wheel.style.transform = `translate(-50%, -50%) rotate(${wheel_theta + theta_between}deg)`;
+
+            cards.forEach(card => {
+                card.style.transitionDelay = '0.1s';
+                card.style.transitionDuration = '1.0s'
+
+                if (closest_card == card) {
+                    card.style.transform = `translate(-50%, -50%) rotate(${-1.0 * (wheel_theta + theta_between)}deg) scale(1.0)`;
+                    card.style.zIndex = 100;
+                } else {
+                    card.style.transform = `translate(-50%, -50%) rotate(${-1.0 * (wheel_theta + theta_between)}deg) scale(0.5)`;
+                    card.style.zIndex = 1;
+                }
+            });
+
+            wheel_theta = wheel_theta + theta_between;
+
+            setTimeout(() => {
+                snap_in_progress = false;
+            }, 200);
+        }
+    </script>
+</body>
 
 </html>
